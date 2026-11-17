@@ -1,0 +1,44 @@
+/* UNAI visual refinements — inherits the original black/white/blue interface. */
+:root { --unai-radius: 14px; --unai-shadow: 0 12px 36px rgba(20,32,54,.08); --unai-focus: #235eb8; }
+html { scroll-behavior: smooth; }
+body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+:focus-visible { outline: 3px solid var(--unai-focus); outline-offset: 3px; }
+[v-cloak] { display: none !important; }
+.navbar { position: relative; z-index: 1050; }
+.navbar-brand { display: inline-flex; align-items: center; gap: .55rem; white-space: normal; }
+.navbar-brand img { object-fit: contain; flex: none; }
+.navbar-dark .nav-link { transition: opacity .2s ease, color .2s ease, transform .2s ease; }
+.navbar-dark .nav-link:hover { transform: translateY(-1px); }
+.navbar .navbar-collapse { min-width: 0; }
+main, .container, .container-fluid { min-width: 0; }
+.unai-page-heading { letter-spacing: -.025em; font-weight: 700; }
+.unai-surface { border: 1px solid rgba(19,35,57,.09); border-radius: var(--unai-radius); box-shadow: var(--unai-shadow); background: #fff; }
+.unai-facility-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1.25rem; }
+.unai-facility-card { overflow: hidden; height: 100%; transition: box-shadow .27s ease, transform .27s ease; }
+.unai-facility-card:hover { box-shadow: 0 20px 36px rgba(0,0,0,.13); transform: translateY(-5px); }
+.unai-facility-card img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; background: #eef0f5; }
+.unai-facility-card .card-body { padding: 1.25rem; }
+.unai-facility-card .card-title { font-weight: 700; font-size: 1.2rem; }
+.unai-facility-card .card-text { line-height: 1.68; overflow-wrap: anywhere; }
+.unai-filter { display: grid; grid-template-columns: minmax(0,1fr) minmax(11rem,15rem); gap: .75rem; }
+.unai-filter .form-control,.unai-filter .form-select { min-height: 44px; border-radius: 9px; }
+.unai-filter-status { margin-block: .8rem 1rem; color: #626e7b; font-size: .9rem; }
+.unai-empty { border-radius: 12px; border: 1px dashed #c3cad1; padding: 2.25rem; text-align: center; }
+.unai-carousel { overflow: hidden; border-radius: var(--unai-radius); box-shadow: var(--unai-shadow); }
+.unai-carousel .carousel-item img { width: 100%; height: clamp(260px, 42vw, 560px); object-fit: cover; }
+.unai-carousel .carousel-caption { border-radius: 10px; background: rgba(7,15,28,.58); padding: .65rem 1rem; bottom: 1rem; }
+.unai-card-container { min-width: 0; }
+.form-control, .form-select { max-width: 100%; }
+.table-responsive { border-radius: 10px; }
+.table { vertical-align: middle; }
+.btn { transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease; }
+.btn:hover:not(:disabled) { transform: translateY(-1px); }
+.btn:active:not(:disabled) { transform: translateY(0); }
+.fc { max-width: 100%; }
+.fc .fc-toolbar { gap: .75rem; flex-wrap: wrap; }
+.fc .fc-toolbar-title { font-size: clamp(1.2rem,2.5vw,1.7rem); }
+.fc .fc-event { border-radius: 5px; }
+[data-motion] { will-change: auto; }
+@media (max-width: 991.98px) { .unai-facility-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .navbar-collapse { padding-block: .8rem; } }
+@media (max-width: 575.98px) { .unai-facility-grid {grid-template-columns:1fr;} .unai-filter { grid-template-columns:1fr; } .unai-page-heading { font-size: 1.55rem; } .unai-carousel .carousel-caption { font-size: .8rem; } .unai-carousel .carousel-caption h3 { font-size: 1.1rem; } }
+@media (prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto !important; animation-duration:.01ms !important; transition-duration:.01ms !important; } .unai-facility-card:hover,.btn:hover,.navbar-dark .nav-link:hover { transform:none; } }

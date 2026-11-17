@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "dev:demo": "vite --config vite.demo.config.js",
+    "build:demo": "vite build --config vite.demo.config.js",
+    "check": "node --check public/js/unai-ui.js && node --check resources/js/app.js"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.9",
+    "gsap": "^3.15.1",
+    "lucide": "^0.552.0",
+    "vue": "^3.5.43"
+  },
+  "devDependencies": {
+    "vite": "^8.3.8",
+    "laravel-vite-plugin": "^3.0.0"
+  }
+}
