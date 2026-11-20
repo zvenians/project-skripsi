@@ -26,7 +26,7 @@ class DemoAccessTest extends TestCase
         config()->set('demo.enabled', true);
         $this->get('/dashboard/utama')->assertOk();
         $this->assertAuthenticated();
-        $this->assertSame(config('demo.email'), auth()->user()->email);
+        $this->assertSame(config('demo.profiles.superadmin.email'), auth()->user()->email);
     }
 
     public function test_login_requires_real_credentials_when_demo_is_disabled(): void
@@ -41,7 +41,7 @@ class DemoAccessTest extends TestCase
     {
         config()->set('demo.enabled', true);
         $this->get('/dashboard/utama')->assertOk();
-        $id = User::query()->where('email', config('demo.email'))->value('id');
+        $id = User::query()->where('email', config('demo.profiles.superadmin.email'))->value('id');
         $this->delete('/dashboard/user/'.$id)->assertForbidden();
         $this->assertDatabaseHas('users', ['id' => $id]);
     }

@@ -2,6 +2,10 @@
 /dist
 /laravel-messages
 /public/hot
+/public/build
+/test-results
+/playwright-report
+/storage/logs/*.log
 /storage/*.key
 /vendor
 .env
