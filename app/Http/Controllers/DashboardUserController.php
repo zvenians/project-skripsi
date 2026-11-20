@@ -4,26 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
-class DashboarduserController extends Controller
+class DashboardUserController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
         $user = User::latest()->get();
+
         return view('dashboard.user.index', compact('user'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -34,33 +36,32 @@ class DashboarduserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
         $request->validate([
-            'name'  =>  'required',
-            'email' =>  'required|email|unique:users,email',
-            'password'  =>  'required|min:8',
-            'hp'    =>  'required'
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8',
+            'hp' => 'required',
         ]);
-        $user = user::create([
+        $user = User::create([
             'name' => $request->input('name'),
-            'email' =>$request->input('email'),
-            'password'=> Hash::make($request->input('password')),
-            'no_hp' =>  $request->hp
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+            'no_hp' => $request->hp,
         ]);
-        return redirect('dashboard/user')->with('success','Data berhasil disimpan!');
+
+        return redirect('dashboard/user')->with('success', 'Data berhasil disimpan!');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function show(user $user)
+    public function show(User $user)
     {
         //
     }
@@ -68,10 +69,9 @@ class DashboarduserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\user  $user
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function edit(user $user)
+    public function edit(User $user)
     {
 
         return view('dashboard.user.edit', compact('user'));
@@ -80,39 +80,43 @@ class DashboarduserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\user  $user
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function update(Request $request, user $user)
+    public function update(Request $request, User $user)
     {
-        abort_if(config('demo.enabled') && $user->email === config('demo.email'), 403, 'Akun demo dilindungi.');
+        abort_if($this->isProtectedDemoUser($user), 403, 'Akun demo dilindungi.');
         $request->validate([
-            'name'  =>  'required',
-            'email' =>  ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
-            'no_hp'  =>  'required'
+            'name' => 'required',
+            'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
+            'no_hp' => 'required',
         ]);
         $user = User::whereId($user->id)->update([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'no_hp' =>  $request->no_hp
+            'no_hp' => $request->no_hp,
             // 'password' =>$request->input('password')
         ]);
+
         return redirect('dashboard/user')->with('success', 'Data berhasil diupdate!');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\user  $user
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function destroy(user $user)
+    public function destroy(User $user)
     {
-        abort_if(config('demo.enabled') && $user->email === config('demo.email'), 403, 'Akun demo dilindungi.');
-        $user = user::find($user->id);
+        abort_if($this->isProtectedDemoUser($user), 403, 'Akun demo dilindungi.');
         $user->delete();
 
-        return redirect('dashboard/user')->with('success','Data berhasil dihapus');
+        return redirect('dashboard/user')->with('success', 'Data berhasil dihapus');
+    }
+
+    private function isProtectedDemoUser(User $user): bool
+    {
+        $emails = collect(config('demo.profiles', []))->pluck('email');
+
+        return config('demo.enabled') && $emails->contains($user->email);
     }
 }

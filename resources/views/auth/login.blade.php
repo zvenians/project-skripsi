@@ -8,6 +8,20 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
+                    @if (config('demo.enabled'))
+                        <div class="mb-4">
+                            <p class="font-weight-bold mb-2">Pilih peran demo</p>
+                            <div class="d-flex flex-wrap" style="gap: .5rem">
+                                @foreach (['superadmin' => 'Superadmin', 'organization' => 'Admin Organisasi', 'manager' => 'Pengelola Fasilitas'] as $role => $label)
+                                    <form method="POST" action="{{ route('demo.role', $role) }}">
+                                        @csrf
+                                        <button type="submit" class="btn btn-dark">{{ $label }}</button>
+                                    </form>
+                                @endforeach
+                            </div>
+                        </div>
+                        <hr>
+                    @endif
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 

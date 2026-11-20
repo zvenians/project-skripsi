@@ -19,8 +19,9 @@ class LoginController extends Controller
     public function authenticate(Request $request, DemoAccess $demo)
     {
         if (config('demo.enabled')) {
-            // Neither an email nor a password is required on the showcase.
-            $demo->enter($request);
+            $role = $request->validate(['role' => ['nullable', 'string', 'in:superadmin,organization,manager']])['role'] ?? config('demo.default_role');
+            $demo->enter($request, $role);
+
             return redirect()->intended('/dashboard/utama');
         }
 
@@ -31,6 +32,7 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
             return redirect()->intended('/dashboard/utama');
         }
 
