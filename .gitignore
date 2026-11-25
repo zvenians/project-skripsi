@@ -21,3 +21,17 @@ yarn-error.log
 
 .vercel
 .env*
+
+# Preserve the documented, non-secret configuration template
+!.env.example
+
+# Local and generated files
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.bak
+.phpunit.cache/
+coverage/
+.cache/
+*.tsbuildinfo
